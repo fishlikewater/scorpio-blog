@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: htmlhead" th:with="title='favorites'">
+</head>
+<body>
+<header>
+    <div class="logo" data-scroll-reveal="enter right over 1s"><a th:href="@{/}">小乔、流水...</a></div>
+    <nav class="topnav"  data-scroll-reveal="enter bottom over 1s after 1s">
+        <a th:each="t:${titleList}" th:href="@{${t.address}}"><span th:text="${t.tName}"></span><span class="en" th:text="${t.en}"></span></a>
+    </nav>
+</header>
+<article>
+    <div class="container">
+        <div class="blog" data-scroll-reveal="enter top">
+            <!--推荐文章-->
+
+            <figure th:each="ga:${groomArticle}">
+                <ul>
+                    <a th:href="@{index/detail/{aId}/{contentId}(contentId=${ga.contentId},aId=${ga.aId})}"><img th:src="@{${ga.tPic}}" /><span th:text="${ga.name}"></span></a>
+                </ul>
+                <p><a th:href="@{index/detail/{aId}/{contentId}(contentId=${ga.contentId},aId=${ga.aId})}" th:text="${ga.name}"></a></p>
+                <figcaption th:text="${ga.shortContent}"></figcaption>
+            </figure>
+        </div>
+        <ul class="cbp_tmtimeline">
+            <li th:each="article:${allArticleList}">
+                <time class="cbp_tmtime"><span th:text="${article.day}"></span> <span th:text="${article.year}"></span></time>
+                <div class="cbp_tmicon"></div>
+                <div class="cbp_tmlabel" data-scroll-reveal="enter right over 1s">
+                    <h2 th:text="${article.name}"></h2>
+                    <p><span class="blogpic"><img th:src="@{${article.tPic}}" /></span></p>
+                    <a th:href="@{index/detail/{aId}/{contentId}(contentId=${article.contentId},aId=${article.aId})}" th:text="${article.shortContent}"></a>
+                    <a th:href="@{index/detail/{aId}/{contentId}(contentId=${article.contentId},aId=${article.aId})}" target="_blank" class="readmore">阅读全文&gt;&gt;</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</article>
+<footer>
+    Design by DanceSmile <a href="/">蜀ICP备11002373号-1</a>
+</footer>
+<script>
+    if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))) {
+        (function () {
+            window.scrollReveal = new scrollReveal({reset: true});
+        })();
+    }
+    ;
+</script>
+</body>
+</html>
