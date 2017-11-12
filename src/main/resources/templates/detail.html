@@ -1,6 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="layout :: htmlhead" th:with="title='favorites'"></head>
 <link th:href="@{/css/m.css}" rel="stylesheet" />
+<link rel="stylesheet" th:href="@{/css/github-markdown.css}" />
 <body>
 <header>
     <div class="logo" data-scroll-reveal="enter right over 1s"><a th:href="@{/}">小乔、流水...</a></div>
@@ -16,13 +17,13 @@
 
         </div>
         <div style="margin-top: 30px;"></div>
-        <div class="detail" th:utext="${detailDTO.content}">
+        <div class="detail markdown-body" th:utext="${detailDTO.content}">
 
         </div>
 
     </div>
 </article>
-<footer> Design by DanceSmile <a href="/">蜀ICP备11002373号-1</a> </footer>
+<footer> Design by DanceSmile <a href="/"></a> </footer>
 <script>
     if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
         (function(){

@@ -1,0 +1,11 @@
+.CodeMirror, .CodeMirror-scroll {
+  min-height: 300px;
+}
+
+#topInfo{
+	margin-top: 20px;
+}
+
+#textInfo{
+	padding: 20px;
+}

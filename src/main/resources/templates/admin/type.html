@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>分类管理</title>
+    <script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/js/layui/css/layui.css}"/>
+    <script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+    <base th:href="${baseUrl}"/>
+</head>
+<body>
+<div>
+    <button class="layui-btn layui-btn-normal" id="addType" onclick="myBlog.addType()">添加分类</button>
+</div>
+
+<table class="layui-table" lay-data="{height: 'full-60', url:'/admin/type/list',page:true,id:'type'}" lay-filter="type">
+    <thead>
+    <tr>
+        <th lay-data="{checkbox:true, fixed: true}"></th>
+        <th lay-data="{field:'name', width:300}">名称</th>
+        <th lay-data="{field:'order_by', width:300}">排序</th>
+        <th lay-data="{field:'right', width:150,align:'center', sort: false, toolbar:'#modify'}">操作</th>
+    </tr>
+    </thead>
+</table>
+
+<div id="addDIV"  style="display: none;padding: 10px;">
+    <form class="layui-form" action="/admin/type/add" id="typeForm" method="post">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" lay-verify="required" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="orderBy" lay-verify="required" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</div>
+
+<script type="text/html" id="modify">
+    <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+<script type="text/javascript" th:src="@{/js/myBlog.js}"></script>
+<script>
+    myBlog.initType();
+</script>
+</body>
+</html>

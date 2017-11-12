@@ -22,16 +22,24 @@ public class ArticleDTO extends BaseObject{
 
     private String tPic;
 
-    private String update;
+    private String updateTime;
 
     private String scrq;
 
+    private String typeId;
+
+    private String lable;
+
     private String shortContent;
+
+    private Boolean isComment;
 
     @Transient
     private String day;
     @Transient
     private String year;
+    @Transient
+    private String lableName;
 
     public String getaId() {
         return aId;
@@ -81,12 +89,12 @@ public class ArticleDTO extends BaseObject{
         this.tPic = tPic;
     }
 
-    public String getUpdate() {
-        return update;
+    public String getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate(String update) {
-        this.update = update;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     public String getScrq() {
@@ -122,5 +130,37 @@ public class ArticleDTO extends BaseObject{
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
+
+    public String getLable() {
+        return lable;
+    }
+
+    public void setLable(String lable) {
+        this.lable = lable;
+    }
+
+    public String getLableName() {
+        return lableName;
+    }
+
+    public void setLableName(String lableName) {
+        this.lableName = lableName;
+    }
+
+    public Boolean getComment() {
+        return isComment;
+    }
+
+    public void setComment(Boolean comment) {
+        isComment = comment;
     }
 }
