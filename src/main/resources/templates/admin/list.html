@@ -5,11 +5,11 @@
     <title>文章列表</title>
     <link rel="stylesheet" type="text/css" th:href="@{/js/layui/css/layui.css}" />
     <script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
-    <script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}"></script>
+    <script src="//cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
     <base th:href="${baseUrl}" />
 </head>
 <body>
-<table class="layui-table" lay-data="{height: 'full-60', url:'/admin/list/articles',page:true}" lay-filter="list">
+<table class="layui-table" lay-data="{height: 'full-20', url:'/admin/list/articles',page:true}" lay-filter="list">
     <thead>
     <tr>
         <th lay-data="{checkbox:true, fixed: true}"></th>
@@ -17,7 +17,7 @@
         <th lay-data="{field:'typename', width:80}">类别</th>
         <th lay-data="{field:'author', width:80, sort: true}">作者</th>
         <th lay-data="{field:'isgroom', width:80}">推荐</th>
-        <th lay-data="{field:'lableName', width:120}">标签</th>
+        <th lay-data="{field:'lable', width:120}">标签</th>
         <th lay-data="{field:'updatetime', width:200, sort: true}">更新时间</th>
         <th lay-data="{field:'scrq', width:200, sort: true}">创建时间</th>
         <th lay-data="{field:'right', width:200, sort: false, toolbar:'#modify'}">操作</th>

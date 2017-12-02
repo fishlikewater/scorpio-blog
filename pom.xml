@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>scorpio</groupId>
+	<groupId>fishlikewater</groupId>
 	<artifactId>scorpio-blog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -23,7 +23,16 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
-
+    <repositories>
+        <repository>
+            <id>mvn-repo-scorpio</id>
+            <url>https://raw.github.com/fishlikewater/mvn-repo/scorpio-jdbc/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 	<dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,15 +57,25 @@
 			<scope>test</scope>
 		</dependency>
         <dependency>
-            <groupId>scorpio</groupId>
-            <artifactId>scorpio-jdbc</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.2.2</version>
         </dependency>
         <dependency>
-            <groupId>scorpio</groupId>
-            <artifactId>transactionManager</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>fishlikewater</groupId>
+            <artifactId>scorpio-jdbc</artifactId>
+            <version>1.2</version>
+        </dependency>
+      <!--  <dependency>
+            <groupId>fishlikewater</groupId>
+            <artifactId>transactionManager</artifactId>
+            <version>1.0</version>
+        </dependency>-->
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
@@ -66,7 +85,7 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.20.0</version>
+            <version>3.21.0</version>
         </dependency>
         <dependency>
             <groupId>org.sql2o</groupId>
@@ -78,19 +97,49 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.40</version>
         </dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional> <!-- 这个需要为 true 热部署才有效 -->
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--markdown处理-->
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <version>0.8.0</version>
+        </dependency>
+
+    </dependencies>
 
     <profiles>
         <profile>
             <id>prod</id>
             <build>
                 <resources>
-                    <resource>
+                  <resource>
                         <directory>src/main/java</directory>
                         <filtering>false</filtering>
                         <excludes>
                             <exclude>**/*.java</exclude>
                         </excludes>
+                    </resource>
+                    <resource>
+                        <directory>src/main/java</directory>
+                        <includes>
+                            <include>**/*.sqlmap</include>
+                        </includes>
+                        <filtering>true</filtering>
                     </resource>
                 </resources>
             </build>
@@ -99,6 +148,7 @@
             <id>dev</id>
             <build>
                 <resources>
+
                     <resource>
                         <directory>src/main/java</directory>
                         <filtering>false</filtering>
@@ -115,12 +165,28 @@
                         <directory>src/test/resources</directory>
                         <filtering>false</filtering>
                     </resource>
+                    <resource>
+                        <directory>src/main/java</directory>
+                        <includes>
+                            <include>**/*.sqlmap</include>
+                        </includes>
+                        <filtering>true</filtering>
+                    </resource>
                 </resources>
             </build>
         </profile>
     </profiles>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <finalName>scorpio-blog</finalName>
         <plugins>
             <plugin>
@@ -170,6 +236,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

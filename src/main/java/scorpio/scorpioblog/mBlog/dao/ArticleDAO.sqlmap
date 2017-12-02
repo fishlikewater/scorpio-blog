@@ -1,0 +1,38 @@
+query = select t.name type,t.type_icon,a.* from m_article a left join article_type t on a.type_id=t.id order by a.scrq desc;
+
+queryById = select t.name type,d.content,a.* from m_article a left join article_type t on a.type_id=t.id left join m_detail d on d.id=a.content_id where a.a_id='${id}';
+
+queryAll = select a_id,name, scrq from m_article order by scrq desc;
+
+queryByTag = select t.name type,t.type_icon,a.* from m_article a left join article_type t on a.type_id=t.id where 1=1
+             <#if tag??>
+                and a.lable like '%${tag}%'
+             </#if>
+            order by a.scrq desc;
+
+queryCountByTag = select count(*) from m_article a where 1=1
+             <#if tag??>
+                and a.lable like '%${tag}%'
+             </#if>;
+
+queryByKeyWord = select t.name type,t.type_icon,a.* from m_article a left join article_type t on a.type_id=t.id where 1=1
+             <#if typeId??>
+                and t.id = '${typeId}'
+             </#if>
+            order by a.scrq desc;
+
+queryCountByKeyWord = select count(*) from m_article a left join article_type t on a.type_id=t.id where 1=1
+              <#if typeId??>
+                and t.id = '${typeId}'
+             </#if>;
+
+queryByTitle = select t.name type,t.type_icon,a.* from m_article a left join article_type t on a.type_id=t.id where 1=1
+              <#if title??>
+                and a.name like '%${title}%'
+             </#if>
+            order by a.scrq desc;
+
+queryCountByTitle = select count(*) from m_article a left join article_type t on a.type_id=t.id where 1=1
+              <#if title??>
+                and a.name like '%${title}%'
+             </#if>;

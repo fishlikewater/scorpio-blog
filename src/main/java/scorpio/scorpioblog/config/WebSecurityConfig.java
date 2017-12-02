@@ -14,7 +14,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable();
         http.authorizeRequests()
-                .antMatchers("/**/**.js", "/**/**.css","/**/images/**","/index/**","/").permitAll()
+                .antMatchers("/**/**.js", "/**/**.css","/**/images/**","/**/img/**","/index/**","/","/404","/500").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

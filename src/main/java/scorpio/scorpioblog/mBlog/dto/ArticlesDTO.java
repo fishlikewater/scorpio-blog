@@ -1,10 +1,9 @@
 package scorpio.scorpioblog.mBlog.dto;
 
 import lombok.Data;
-import scorpio.core.BasicObject;
-
+import scorpio.core.BaseObject;
 @Data
-public class ArticlesDTO extends BasicObject {
+public class ArticlesDTO extends BaseObject {
 
     private String aId;
 

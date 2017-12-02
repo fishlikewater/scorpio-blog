@@ -19,6 +19,8 @@ public class DataSourceConfiguration {
     private String driverClass;
     @Value("${spring.datasource.url}")
     private String url;
+    @Value("${scorpio.debug:false}")
+    private String debug;
 
     @Bean(destroyMethod = "", name = "sqLiteDataSource")
     public DataSource dataSource() {
@@ -31,6 +33,7 @@ public class DataSourceConfiguration {
 
     @Bean
     public Sql2o sql2o(){
+        BaseUtils.debug = Boolean.valueOf(debug);
         return BaseUtils.open(dataSource());
     }
 }

@@ -1,5 +1,6 @@
 package scorpio.scorpioblog.mBlog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,6 +13,7 @@ public class BlogConstant {
     private final static String p4 = "/images/4.jpg";
     private static List<String> list = new ArrayList<>();
     static {
+
         list.add(p1);
         list.add(p2);
         list.add(p3);
@@ -21,5 +23,12 @@ public class BlogConstant {
     public static String getPic(){
         int i = new Random().nextInt(4);
         return list.get(i);
+    }
+
+    public static void main(String[] args) {
+        String path = Thread.currentThread().getContextClassLoader().getResource("/static/image/rangimage").getPath();
+        File file = new File(path);
+        String[] list = file.list();
+        System.out.println(list.length);
     }
 }

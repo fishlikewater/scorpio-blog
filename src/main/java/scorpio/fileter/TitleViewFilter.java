@@ -2,6 +2,7 @@ package scorpio.fileter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
+import scorpio.scorpioblog.mBlog.dao.TitleDAO;
 import scorpio.scorpioblog.mBlog.dto.TitleDTO;
 
 import javax.servlet.*;
@@ -14,13 +15,11 @@ import java.util.List;
 @WebFilter(urlPatterns = "/*")
 public class TitleViewFilter extends OncePerRequestFilter {
     @Autowired
-    private TitleDTO tDto;
+    private TitleDAO titleDAO;
 
     @Override
     protected void doFilterInternal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
-        /** 获取板块 */
-        List<TitleDTO> list = tDto.findAll();
-        servletRequest.setAttribute("titleList", list);
+
         servletRequest.setAttribute("baseUrl",servletRequest.getScheme()+"://"+servletRequest.getServerName()+":"+servletRequest.getServerPort()+servletRequest.getContextPath());
 
         filterChain.doFilter(servletRequest,servletResponse);

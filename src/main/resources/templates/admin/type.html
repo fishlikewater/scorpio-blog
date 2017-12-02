@@ -3,23 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>分类管理</title>
-    <script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}"></script>
+    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/js/layui/css/layui.css}"/>
+    <link th:href="@{/ui/pages/css/style.min.css}" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
     <base th:href="${baseUrl}"/>
+    <style>
+        .item-meta-ico {
+            display: inline-block;
+            width: 42px;
+            height: 42px;
+            border: 1px solid #eaeaea;
+            border-radius: 50%
+        }
+    </style>
 </head>
 <body>
 <div>
     <button class="layui-btn layui-btn-normal" id="addType" onclick="myBlog.addType()">添加分类</button>
 </div>
 
-<table class="layui-table" lay-data="{height: 'full-60', url:'/admin/type/list',page:true,id:'type'}" lay-filter="type">
+<table class="layui-table" lay-data="{height: 'full-40', url:'/admin/type/list',page:true,id:'type'}" lay-filter="type">
     <thead>
     <tr>
         <th lay-data="{checkbox:true, fixed: true}"></th>
         <th lay-data="{field:'name', width:300}">名称</th>
         <th lay-data="{field:'order_by', width:300}">排序</th>
-        <th lay-data="{field:'right', width:150,align:'center', sort: false, toolbar:'#modify'}">操作</th>
+        <th lay-data="{field:'type_icon', width:100,hight:35,align:'center', sort: false, toolbar:'#pic'}">图标</th>
+        <th lay-data="{field:'right', width:180,align:'center', sort: false, toolbar:'#modify'}">操作</th>
     </tr>
     </thead>
 </table>
@@ -51,8 +62,14 @@
 
 <script type="text/html" id="modify">
     <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-success layui-btn-mini" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
 </script>
+<script type="text/html" id="pic">
+    <div class="item-meta-ico {{ d.type_icon }}"
+         style="background: url('/ui/pages/img/bg-ico.png') no-repeat;background-size: 40px auto;'"></div>
+</script>
+
 <script type="text/javascript" th:src="@{/js/myBlog.js}"></script>
 <script>
     myBlog.initType();

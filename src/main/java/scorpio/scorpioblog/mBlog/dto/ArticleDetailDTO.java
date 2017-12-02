@@ -6,8 +6,6 @@ import scorpio.annotation.Table;
 import scorpio.core.BaseObject;
 
 @Data
-@Component
-@Table(pojo = ArticleDetailDTO.class,table = "m_detail")
 public class ArticleDetailDTO extends BaseObject {
 
     private String id;

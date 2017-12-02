@@ -1,0 +1,7 @@
+query = select * from agenda where 1=1
+        <#if end??>
+            and day <= '${end}'
+        </#if>
+        <#if begin??>
+            and day>= '${begin}'
+        </#if>;

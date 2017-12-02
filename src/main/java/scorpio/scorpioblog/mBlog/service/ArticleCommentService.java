@@ -2,7 +2,6 @@ package scorpio.scorpioblog.mBlog.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import scorpio.annotation.Tranctional;
 import scorpio.scorpioblog.mBlog.dao.ArticleCommentDAO;
 import scorpio.scorpioblog.mBlog.dto.ArticleCommentDTO;
 import scorpio.scorpioblog.utils.DateUtil;
@@ -19,7 +18,6 @@ public class ArticleCommentService {
      * 添加评论
      * @param dto
      */
-    @Tranctional
     public void edit(ArticleCommentDTO dto){
         dto.setTime(DateUtil.formatDate(new Date()));
         articleCommentDAO.createAndId(dto);
@@ -29,7 +27,6 @@ public class ArticleCommentService {
      * 删除评论
      * @param id
      */
-    @Tranctional
     public void remove(String id){
         articleCommentDAO.remove(id);
     }

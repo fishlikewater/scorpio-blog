@@ -2,10 +2,9 @@ package scorpio.scorpioblog.mBlog.dto;
 
 
 import lombok.Data;
-import scorpio.core.BasicObject;
-
+import scorpio.core.BaseObject;
 @Data
-public class ArticleLableDTO extends BasicObject{
+public class ArticleLableDTO extends BaseObject{
 
     private String id;
 

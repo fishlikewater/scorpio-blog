@@ -5,9 +5,7 @@ import org.springframework.stereotype.Component;
 import scorpio.annotation.Table;
 import scorpio.core.BaseObject;
 
-@Table(pojo =TitleDTO.class ,table = "m_title",pk = "t_id")
 @Data
-@Component
 public class TitleDTO extends BaseObject{
 
     private String tId;

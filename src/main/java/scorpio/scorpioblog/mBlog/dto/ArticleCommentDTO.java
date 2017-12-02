@@ -1,13 +1,13 @@
 package scorpio.scorpioblog.mBlog.dto;
 
 import lombok.Data;
-import scorpio.core.BasicObject;
+import scorpio.core.BaseObject;
 
 /**
  * 评论
  */
 @Data
-public class ArticleCommentDTO extends BasicObject{
+public class ArticleCommentDTO extends BaseObject{
 
     private String id;
 
