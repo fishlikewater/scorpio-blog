@@ -36,6 +36,9 @@
 
     var content = [[${article.content}]];
     $(".post-tags").after(content);
+    layui.use('code', function(){
+        layui.code();
+    })
 </script>
 <!--留言内容-->
 <!-- UY BEGIN -->
