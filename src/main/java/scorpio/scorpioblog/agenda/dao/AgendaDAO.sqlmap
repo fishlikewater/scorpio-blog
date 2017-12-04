@@ -1,7 +1,7 @@
-query = select * from agenda where 1=1
+query = select a.id,a.title, a.startTime start, a.endTime end,a.allDay,a.color from agenda a where 1=1
         <#if end??>
-            and day <= '${end}'
+            and startTime <= '${end}'
         </#if>
         <#if begin??>
-            and day>= '${begin}'
+            and endTime>= '${begin}'
         </#if>;

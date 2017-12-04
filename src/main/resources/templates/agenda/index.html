@@ -1,30 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset='utf-8' />
-<link rel="stylesheet" type="text/css" href="./fullcalendar/css/style.css">
-<link href='./agenda/css/fullcalendar.min.css' rel='stylesheet' />
-<link href='./agenda/css/fullcalendar.print.min.css' rel='stylesheet' media='print' />
-<!-- <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">   -->
-<script src='./agenda/js/moment.min.js'></script>
-<script src='./agenda/js/jquery.min.js'></script>
-<script src='./agenda/js/fullcalendar.min.js'></script>
-<script src='./agenda/js/locale-all.js'></script>
-<!-- <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
-<script type="text/javascript" src="./fullcalendar/js/agenda.js"></script>
-<script>
-	$(document).ready(function() {
-		agenda.init();
-	});
+    <meta charset='utf-8'/>
+    <base th:href="${#httpServletRequest.getContextPath()}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/agenda/css/style.css}">
+    <link th:href='@{/agenda/css/fullcalendar.min.css}' rel='stylesheet'/>
+    <link th:href='@{/agenda/css/fullcalendar.print.min.css}' rel='stylesheet' media='print'/>
+    <!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+    <link rel="stylesheet" type="text/css" th:href="@{/js/layui/css/layui.css}"/>
+    <script th:src='@{/agenda/js/moment.min.js}'></script>
+    <script th:src='@{/agenda/js/jquery.min.js}'></script>
+    <script th:src='@{/agenda/js/fullcalendar.min.js}'></script>
+    <script th:src='@{/agenda/js/locale-all.js}'></script>
+    <!--<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <script type="text/javascript" th:src="@{/agenda/js/agenda.js}"></script>
+    <script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+    <script>
+        $(document).ready(function () {
+            agenda.init();
+        });
 
-</script>
+    </script>
 </head>
 <body>
-	<div id='top'>
-		Locales:
-		<select id='locale-selector'></select>
-	</div>
-	<div id='calendar'></div>
+<div id='top' style="display: none;">
+    Locales:
+    <select id='locale-selector'></select>
+</div>
+<div id='calendar'></div>
+<div style="display: none;">
+    <form class="layui-form">
+        <div class="layui-form-item">
+
+
+        </div>
+
+    </form>
+
+</div>
 
 </body>
 </html>

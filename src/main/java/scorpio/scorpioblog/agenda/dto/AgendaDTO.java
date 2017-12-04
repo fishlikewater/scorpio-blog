@@ -17,7 +17,7 @@ public class AgendaDTO extends BaseObject {
     private String createTime;//创建时间
 
     /**
-     * CREATE TABLE `Schedule` (
+     * CREATE TABLE `agenda` (
      `id` varchar(32) NOT NULL COMMENT 'ID',
      `title` varchar(100) DEFAULT NULL COMMENT '日程内容',
      `startTime` datetime DEFAULT NULL COMMENT '开始时间',

@@ -1,14 +1,6 @@
 @charset "utf-8";
 
 /* 语言选择 */
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
-    font-size: 14px;
-}
-
 #top {
     background: #eee;
     border-bottom: 1px solid #ddd;
@@ -16,9 +8,25 @@ body {
     line-height: 40px;
     font-size: 12px;
 }
-
+/* 日历 */
 #calendar {
-    max-width: 900px;
     margin: 40px auto;
     padding: 0 10px;
+}
+/* Event 参数 className 的值 */
+.done:before {
+    content:"【 已完成 】";
+    background-color:yellow;
+    color:green;
+    text-align:center;
+    font-weight:bold;
+    width:100%;
+}
+/* Event 参数 className 的值 */
+.doing:before {
+    content:"【 未完成 】";
+    background-color:yellow;
+    color:red;
+    text-align:center;
+    font-weight:bold;
 }

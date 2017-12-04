@@ -1,7 +1,14 @@
 var agenda = new function($) {
 
+    var layer;
+    var form;
+
     return {
         init: function() {
+            layui.use(['layer','form'], function () {
+                layer = layui.layer;
+                form = layui.form;
+            })
             //国际化默认值为'en'，代表使用英文
             var initialLocaleCode = 'zh-cn';
             //初始化FullCalendar 
@@ -22,19 +29,7 @@ var agenda = new function($) {
                 selectable: true,
                 selectHelper: true,
                 select: function(start, end) {
-                    console.log(start.format());
-                    console.log(end.format());
-                    var title = prompt('Event Title:');
-                    var eventData;
-                    if (title) {
-                        eventData = {
-                            title: title,
-                            start: start,
-                            end: end
-                        };
-                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-                    }
-                    $('#calendar').fullCalendar('unselect');
+                    agenda.select(start, end);
                 },
                 /* dayClick: function(date){
 					console.log('dayClick触发的时间为：', date.format());
@@ -79,21 +74,13 @@ var agenda = new function($) {
                 weekends: true,
                 //日历初始化时显示的日期，月视图显示该月，周视图显示该周，日视图显示该天，和当前日期没有关系
                 //defaultDate: '2016-06-06',
-                //日程数据 
-                events: [{
-                        title: 'All Day Event',
-                        start: '2016-08-11'
-                    },
-                    {
-                        id: 4,
-                        title: '使用className:done',
-                        start: '2017-12-04 09:00:00',
-                        end: '2017-12-04 18:00:00',
-                        color: 'blue',
-                        className: 'done'
-
-                    },
-                ]
+                //日程数据
+                events: function(start,end,timezone, callback) {
+                    var beginDay = start.format("YYYY-MM-DD")
+                    var endDay = end.format("YYYY-MM-DD")
+                    agenda.loadEvent(beginDay, endDay, callback)
+                },
+                
             });
 
             $.each($.fullCalendar.locales, function(localeCode) {
@@ -112,6 +99,51 @@ var agenda = new function($) {
                 }
             });
         },
+
+
+        //加载数据
+        loadEvent : function (beginDay, endDay, callback) {
+            jQuery.get("/admin/agenda/list",
+                {
+                    beginDay:beginDay,
+                    endDay:endDay
+                },
+                function (data) {
+                    var events = [];
+
+                    callback(events);
+                })
+        },
+
+        //选择触发
+        select : function (start, end) {
+            layer.open({
+                title:'日程编辑'
+            })
+            var dto = {
+                startTime:start.format(),
+                endTime:end.format()
+            }
+            jQuery.post("",
+                {
+
+                },function () {
+
+                })
+
+
+            var title = prompt('Event Title:');
+            var eventData;
+            if (title) {
+                eventData = {
+                    title: title,
+                    start: start,
+                    end: end
+                };
+                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            }
+            $('#calendar').fullCalendar('unselect');
+        }
 
 
     }

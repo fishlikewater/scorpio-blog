@@ -32,6 +32,14 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
+        <repository>
+            <id>mvn-repo-transient</id>
+            <url>https://raw.github.com/fishlikewater/mvn-repo/transaction/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
     </repositories>
 	<dependencies>
         <dependency>
@@ -71,11 +79,11 @@
             <artifactId>scorpio-jdbc</artifactId>
             <version>1.2</version>
         </dependency>
-      <!--  <dependency>
+        <dependency>
             <groupId>fishlikewater</groupId>
             <artifactId>transactionManager</artifactId>
             <version>1.0</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
