@@ -35,11 +35,12 @@ var agenda = new function ($) {
 					console.log('dayClick触发的时间为：', date.format());
                 },*/
                 eventClick: function (event) {
-                    alert(event.title);
+                    agenda.edit(event);
                 },
                 eventResize: function (event, dayDelta, revertFunc) {
                     //do something here...
-                    console.log(' --- start --- eventResize');
+                    agenda.moveEvent(event);
+                   /* console.log(' --- start --- eventResize');
                     console.log('eventResize被执行，Event的title属性值为：', event.title);
                     if (dayDelta._days != 0) {
                         console.log('eventResize被执行，Event的start和end时间改变了：', dayDelta._days + '天！');
@@ -50,12 +51,13 @@ var agenda = new function ($) {
                         console.log('eventResize被执行，Event的start和end时间没有改变！');
                     }
                     //revertFunc();
-                    console.log('--- end --- eventResize');
+                    console.log('--- end --- eventResize');*/
                     // ...
                 },
                 eventDrop: function (event, dayDelta, revertFunc) {
                     //do something here...
-                    console.log('eventDrop --- start ---');
+                    agenda.moveEvent(event);
+                    /*console.log('eventDrop --- start ---');
                     console.log('eventDrop被执行，Event的title属性值为：', event.title);
                     if (dayDelta._days != 0) {
                         console.log('eventDrop被执行，Event的start和end时间改变了：', dayDelta._days + '天！');
@@ -66,7 +68,7 @@ var agenda = new function ($) {
                     }
                     //revertFunc();
                     console.log('eventDrop --- end ---');
-                    // ...
+                    // ...*/
                 },
                 editable: true,
                 eventLimit: true, //
@@ -110,34 +112,44 @@ var agenda = new function ($) {
                 },
                 function (data) {
                     var events = [];
-
+                    jQuery.each(data, function (k,v) {
+                        events.push(v)
+                    })
                     callback(events);
                 })
         },
 
         //选择触发
         select: function (start, end) {
-            var dto = {
-                startTime: start.format(),
-                endTime: end.format()
-            }
+            var beginTime = start.format("YYYY-MM-DD HH:mm:ss")
+            var endTime = end.format("YYYY-MM-DD HH:mm:ss")
+            jQuery("#content").text("");
+            form.render(null,'agendaForm');
+            jQuery("#viewtime").html(beginTime + "至" + endTime);
             layer.open({
                 title: '日程编辑',
                 type: 1,
-                skin: 'layui-layer-rim layui-layer-lan', //加上边框
-                area: ['420px', '240px'], //宽高
+                skin: 'layui-layer-lan', //加上边框
+                area: ['600px', '300px'], //宽高
                 content: jQuery("#viewDiv"),
-                bnt: ['保存', '取消'],
+                btn: ['保存', '取消'],
                 'yes': function (index) {
-                    var content = jQuery("#content").text();
+                    var content = jQuery("#content").val();
                     if (content == "") {
                         layer.msg("请输入内容", {icon: 2});
                         return false;
                     }
-                    jQuery.post("/admin/agenda/create", {dto: dto}, function (data) {
+                    jQuery.post("/admin/agenda/create",
+                        {
+                            startTime: beginTime,
+                            endTime:endTime,
+                            content:content
+                        }, function (data) {
                         if(data.code == 200){
                             layer.close(index);
+                            layer.msg("保存成功",{icon:1});
                             eventData = {
+                                id:data.id,
                                 title: content,
                                 start: start,
                                 end: end
@@ -149,10 +161,93 @@ var agenda = new function ($) {
                         }
                     })
                 },
-                'bnt2': function (index) {
+                'btn2': function (index) {
                     layer.close(index);
                 }
             });
+        },
+        
+        edit : function (event) {
+            var beginTime = event.start.format("YYYY-MM-DD HH:mm:ss")
+            var endTime = event.end.format("YYYY-MM-DD HH:mm:ss")
+            jQuery("#content").html('');
+            form.render(null,'agendaForm');
+            jQuery("#id").val(event.id)
+            jQuery("#viewtime").html(beginTime + "至" + endTime);
+            jQuery("#content").html(event.title);
+            layer.open({
+                title: '日程编辑',
+                type: 1,
+                skin: 'layui-layer-lan', //加上边框
+                area: ['600px', '300px'], //宽高
+                content: jQuery("#viewDiv"),
+                skin: 'layui-layer-molv',
+                btn: ['删除','保存', '取消'],
+                'yes':function (index) {
+                    layer.confirm("确认删除日程吗？", function () {
+                        jQuery.post("/admin/agenda/delete", {
+                            id:event.id
+                        },function (data) {
+                            if(data.code == 200){
+                                layer.msg("删除成功",{icon:1});
+                                layer.close(index);
+                                $('#calendar').fullCalendar('removeEvents', event.id);
+                            }else{
+                                layer.msg("删除失败",{icon:2});
+                                layer.close(index);
+                            }
+                        })
+                    })
+                },
+                'btn2': function (index) {
+                    var content = jQuery("#content").val();
+                    if (content == "") {
+                        layer.msg("请输入内容", {icon: 2});
+                        return false;
+                    }
+                    jQuery.post("/admin/agenda/create",
+                        {
+                            startTime: beginTime,
+                            endTime:endTime,
+                            content:content,
+                            id:event.id
+                        }, function (data) {
+                            if(data.code == 200){
+                                layer.close(index);
+                                eventData = {
+                                    id:event.id,
+                                    title: content,
+                                    start: beginTime,
+                                    end: endTime
+                                };
+                                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                                $('#calendar').fullCalendar('unselect');
+                            }else{
+                                layer.msg("保存失败", {icon:2});
+                            }
+                        })
+                },
+                'btn3': function (index) {
+                    layer.close(index);
+                }
+            });
+        },
+
+        moveEvent : function (event) {
+            var beginTime = event.start.format("YYYY-MM-DD HH:mm:ss")
+            var endTime = event.end.format("YYYY-MM-DD HH:mm:ss")
+            jQuery.post("/admin/agenda/update",
+                {
+                    startTime: beginTime,
+                    endTime:endTime,
+                    id:event.id
+                }, function (data) {
+                    if(data.code == 200){
+                        layer.msg("操作成功",{icon:1});
+                    }else{
+                        layer.msg("操作失败", {icon:2});
+                    }
+                })
         }
 
 

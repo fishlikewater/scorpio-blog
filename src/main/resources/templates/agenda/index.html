@@ -28,18 +28,19 @@
     <select id='locale-selector'></select>
 </div>
 <div id='calendar'></div>
-<div style="display: none;" id="viewDiv">
-    <form class="layui-form">
+<div style="display: none;padding: 10px;" id="viewDiv">
+    <form class="layui-form" lay-filter="agendaForm">
+        <input type="hidden" id="id">
         <div class="layui-form-item">
-            <label class="layui-form-lable">时间:</label>
-            <div class="layui-input-inline">
-                <span class="layui-form-lable" id="viewtime"></span>
+            <label class="layui-form-label">时间:</label>
+            <div class="layui-input-block">
+                <span style="line-height: 38px;color: green;" id="viewtime"></span>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-lable">内容:</label>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">内容:</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" id="content" class="layui-textarea"></textarea>
+                <textarea name="content" id="content" placeholder="请输入内容" class="layui-textarea"></textarea>
             </div>
         </div>
     </form>

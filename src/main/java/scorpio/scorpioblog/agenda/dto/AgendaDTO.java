@@ -1,10 +1,12 @@
 package scorpio.scorpioblog.agenda.dto;
 
 import lombok.Data;
+import scorpio.annotation.Transient;
 import scorpio.core.BaseObject;
 @Data
 public class AgendaDTO extends BaseObject {
 
+    @Transient
     private static final long serialVersionUID = 1L;
     private String id;//ID
     private String title;//日程内容
@@ -12,7 +14,7 @@ public class AgendaDTO extends BaseObject {
     private String endTime;//结束时间
     private String allDay;//是否全天，1 - 是，0 - 不是
     private String color;//颜色
-    private String userID;//用户ID
+    private String userId;//用户ID
     private String isFinish;//是否完成，1 - 是，0 - 不是
     private String createTime;//创建时间
 

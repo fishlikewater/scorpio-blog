@@ -34,4 +34,13 @@ public class AgendaService {
 
         return id;
     }
+
+    /**
+     * 拖拽更新
+     * @param dto
+     */
+    public void update(AgendaDTO dto) {
+        agendaDAO.updateIgnoreEmpty(dto);
+
+    }
 }
