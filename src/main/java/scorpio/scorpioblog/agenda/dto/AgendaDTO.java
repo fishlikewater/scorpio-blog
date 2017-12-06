@@ -12,8 +12,13 @@ public class AgendaDTO extends BaseObject {
     private String title;//日程内容
     private String startTime;//开始时间
     private String endTime;//结束时间
-    private String allDay;//是否全天，1 - 是，0 - 不是
+    private Boolean allDay;//是否全天，1 - 是，0 - 不是
     private String color;//颜色
+    private String url;//链接
+    private Boolean editable;//是否编辑
+    private String backgroundColor;//背景颜色
+    private String borderColor;//边框颜色。
+    private String textColor;//文本颜色。
     private String userId;//用户ID
     private String isFinish;//是否完成，1 - 是，0 - 不是
     private String createTime;//创建时间

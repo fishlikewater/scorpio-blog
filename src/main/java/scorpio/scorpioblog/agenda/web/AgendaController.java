@@ -60,6 +60,7 @@ public class AgendaController {
     public JSONObject createAgenda(@RequestParam(value = "startTime",required = true) String startTime,
                                    @RequestParam(value = "endTime", required = true) String endTime,
                                    @RequestParam(value = "content", required = true)String content,
+                                   @RequestParam(value = "name", required = true)String name,
                                    @RequestParam(value = "id", required = false)String id){
 
         Map<String, Object> map = new HashMap<>();
@@ -72,6 +73,11 @@ public class AgendaController {
         dto.setStartTime(startTime);
         dto.setEndTime(endTime);
         dto.setTitle(content);
+        if(StringUtils.equals("month", name)){
+            dto.setAllDay(true);
+        }else{
+            dto.setAllDay(false);
+        }
         dto.setId(id);
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         dto.setUserId(principal.getUsername());

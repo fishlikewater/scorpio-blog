@@ -28,8 +28,8 @@ var agenda = new function ($) {
                 navLinks: true, // can click day/week names to navigate views
                 selectable: true,
                 selectHelper: true,
-                select: function (start, end) {
-                    agenda.select(start, end);
+                select: function (start, end, jsEvent, view) {
+                    agenda.select(start, end, view);
                 },
                 /* dayClick: function(date){
 					console.log('dayClick触发的时间为：', date.format());
@@ -120,7 +120,8 @@ var agenda = new function ($) {
         },
 
         //选择触发
-        select: function (start, end) {
+        select: function (start, end, view) {
+            console.log(view.name)
             var beginTime = start.format("YYYY-MM-DD HH:mm:ss")
             var endTime = end.format("YYYY-MM-DD HH:mm:ss")
             jQuery("#content").text("");
@@ -141,9 +142,10 @@ var agenda = new function ($) {
                     }
                     jQuery.post("/admin/agenda/create",
                         {
-                            startTime: beginTime,
-                            endTime:endTime,
-                            content:content
+                            'startTime': beginTime,
+                            'endTime':endTime,
+                            'content':content,
+                            'name':view.name,
                         }, function (data) {
                         if(data.code == 200){
                             layer.close(index);
@@ -152,7 +154,7 @@ var agenda = new function ($) {
                                 id:data.id,
                                 title: content,
                                 start: start,
-                                end: end
+                                end: end,
                             };
                             $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
                             $('#calendar').fullCalendar('unselect');
