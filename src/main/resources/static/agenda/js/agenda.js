@@ -28,6 +28,8 @@ var agenda = new function ($) {
                 navLinks: true, // can click day/week names to navigate views
                 selectable: true,
                 selectHelper: true,
+                eventTimeFormat:"HH:mm",
+                displayEventEnd:true,
                 select: function (start, end, jsEvent, view) {
                     agenda.select(start, end, view);
                 },
@@ -121,7 +123,10 @@ var agenda = new function ($) {
 
         //选择触发
         select: function (start, end, view) {
-            console.log(view.name)
+            var className = '';
+            if(view.name == 'month'){
+                className = 'allDay';
+            }
             var beginTime = start.format("YYYY-MM-DD HH:mm:ss")
             var endTime = end.format("YYYY-MM-DD HH:mm:ss")
             jQuery("#content").text("");
@@ -155,6 +160,7 @@ var agenda = new function ($) {
                                 title: content,
                                 start: start,
                                 end: end,
+                                className:className
                             };
                             $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
                             $('#calendar').fullCalendar('unselect');

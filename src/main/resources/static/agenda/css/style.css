@@ -30,3 +30,13 @@
     text-align:center;
     font-weight:bold;
 }
+/* Event 参数 className 的值 */
+.allDay:before {
+    content:"【 全天 】";
+    background-color:yellow;
+    color:green;
+    text-align:center;
+    font-weight:bold;
+    width:100%;
+}
+

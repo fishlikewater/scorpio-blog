@@ -1,4 +1,4 @@
-query = select a.id,a.title, a.start_time start, a.end_time end,a.all_day allDay,a.editable,a.url,a.color,a.background_color backgroundColor,a.border_color borderColor,a.text_color textColor from agenda a where 1=1
+query = select a.id,a.title, a.start_time start, a.end_time end,a.all_day allDay,a.editable,a.url,a.class_name className,a.color,a.background_color backgroundColor,a.border_color borderColor,a.text_color textColor from agenda a where 1=1
         <#if end??>
             and end_time <= '${end}'
         </#if>

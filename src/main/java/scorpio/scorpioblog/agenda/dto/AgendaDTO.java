@@ -16,6 +16,7 @@ public class AgendaDTO extends BaseObject {
     private String color;//颜色
     private String url;//链接
     private Boolean editable;//是否编辑
+    private String className;//class
     private String backgroundColor;//背景颜色
     private String borderColor;//边框颜色。
     private String textColor;//文本颜色。

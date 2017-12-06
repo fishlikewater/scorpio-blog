@@ -75,6 +75,7 @@ public class AgendaController {
         dto.setTitle(content);
         if(StringUtils.equals("month", name)){
             dto.setAllDay(true);
+            dto.setClassName("allDay");
         }else{
             dto.setAllDay(false);
         }
