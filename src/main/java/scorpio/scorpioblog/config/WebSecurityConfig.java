@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -13,8 +14,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable();
+        http.headers().defaultsDisabled()
+                .cacheControl();
         http.authorizeRequests()
-                .antMatchers("/**/**.js", "/**/**.css","/**/images/**","/**/img/**","/index/**","/","/404","/500").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -37,5 +39,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .inMemoryAuthentication()
                 .withUser("zhangx").password("zw131420").roles("USER");
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/**/**.js", "/**/**.css","/**/images/**","/**/img/**","/index/**","/","/404","/500");
     }
 }
