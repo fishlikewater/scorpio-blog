@@ -129,8 +129,7 @@ var agenda = new function ($) {
             }
             var beginTime = start.format("YYYY-MM-DD HH:mm:ss")
             var endTime = end.format("YYYY-MM-DD HH:mm:ss")
-            jQuery("#content").text("");
-            form.render(null,'agendaForm');
+            jQuery("#content").val("");
             jQuery("#viewtime").html(beginTime + "至" + endTime);
             layer.open({
                 title: '日程编辑',
@@ -182,7 +181,7 @@ var agenda = new function ($) {
             form.render(null,'agendaForm');
             jQuery("#id").val(event.id)
             jQuery("#viewtime").html(beginTime + "至" + endTime);
-            jQuery("#content").html(event.title);
+            jQuery("#content").val(event.title);
             layer.open({
                 title: '日程编辑',
                 type: 1,
