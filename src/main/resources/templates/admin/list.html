@@ -6,7 +6,9 @@
     <link rel="stylesheet" type="text/css" th:href="@{/js/layui/css/layui.css}" />
     <script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
     <script src="//cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
-    <base th:href="${baseUrl}" />
+    <script th:inline="javascript">
+        var contextPath = /*[[${#httpServletRequest.getScheme()+"://"+#httpServletRequest.getServerName()+":"+#httpServletRequest.getServerPort()+#httpServletRequest.getContextPath()+"/"}]]*/ 'contextPath';
+    </script>
 </head>
 <body>
 <table class="layui-table" lay-data="{height: 'full-20', url:'/admin/list/articles',page:true}" lay-filter="list">

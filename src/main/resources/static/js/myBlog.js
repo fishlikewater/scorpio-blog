@@ -4,11 +4,12 @@ var myBlog = new function () {
 
         //加载分类下拉框
         loadType: function (id) {
-            jQuery.get("admin/type/list",function (data) {
+            jQuery.get("/admin/type/list",function (data) {
                 var type = jQuery("#type");
                 jQuery.each(data.data,function (k,v) {
                     type.append("<option value='"+v.id+"'>"+v.name+"</option>");
-                })
+                });
+                jQuery("#type").val(id);
 
             })
 
@@ -40,12 +41,12 @@ var myBlog = new function () {
                             layer.close(index);
                             var id = data.id;
                             var cId = data.contentid;
-                            jQuery.post("admin/blog/detele",{id:id,cId:cId},function () {
+                            jQuery.post(contextPath + "admin/blog/detele",{id:id,cId:cId},function () {
                                 layer.msg("删除成功",{icon:1})
                             })
                         });
                     } else if (layEvent === 'edit') { //编辑
-                        window.location.href = "admin/blog/update?id=" + data.id;
+                        window.location.href = contextPath + "admin/blog/update?id=" + data.id;
                     }
                 })
 

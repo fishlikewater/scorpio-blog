@@ -88,7 +88,8 @@
         <button style="float:right;margin-right: 20px;" class="layui-btn layui-btn-normal" onclick="markDown.toSave()">保存</button>
     </div>
 </body>
-<script>
-    myBlog.loadType();
+<script th:inline="javascript">
+    var typeId = /*[[${dto.typeId}]]*/'typeId';
+    myBlog.loadType(typeId);
 </script>
 </html>

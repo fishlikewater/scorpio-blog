@@ -13,7 +13,7 @@
 <article class="main-content page-page" th:inline="text">
     <div class="post-header">
         <h1 class="post-title" itemprop="name headline">
-            <a th:href="@{'/pages/article/'+${article.a_id}}" th:text="${article.name}"></a>
+            <a th:href="@{'/index/article/'+${article.a_id}}" th:text="${article.name}"></a>
         </h1>
         <div class="post-data">
             <time  itemprop="datePublished">发布于<span th:text="${article.scrq}"></span> </time>

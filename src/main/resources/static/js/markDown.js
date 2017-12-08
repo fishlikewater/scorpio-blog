@@ -56,7 +56,7 @@ var markDown = new function () {
         getContent : function (id) {
             simplemde.clearAutosavedValue();
             simplemde.value("");
-            jQuery.get("admin/blog/content?id="+id,function (data) {
+            jQuery.get("/admin/blog/content?id="+id,function (data) {
                 simplemde.value(data.content);
             })
         }
