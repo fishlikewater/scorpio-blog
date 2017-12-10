@@ -4,7 +4,6 @@
 <head>
     <title></title>
     <meta charset="utf-8">
-    <base th:href="${baseUrl}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
     <link rel="stylesheet" th:href="@{/css/github-markdown.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/js/layui/css/layui.css}" />
@@ -29,7 +28,7 @@
         <form class="layui-form" action="">
             <input type="hidden" th:value="${dto.aId}" id="id">
             <input type="hidden" th:value="${dto.contentId}" id="contentId">
-            <input type="hidden" th:value="${dto.tPic}" id="contentId">
+            <input type="hidden" th:value="${dto.tPic}" id="tPic">
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">标题</label>
@@ -89,7 +88,9 @@
     </div>
 </body>
 <script th:inline="javascript">
-    var typeId = /*[[${dto.typeId}]]*/'typeId';
-    myBlog.loadType(typeId);
+    jQuery(document).ready(function($) {
+        var typeId = /*[[${dto.typeId}]]*/'typeId';
+        myBlog.loadType(typeId);
+    });
 </script>
 </html>

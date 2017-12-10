@@ -1,18 +1,20 @@
-query = select t.name type,t.type_icon,a.* from m_article a left join article_type t on a.type_id=t.id order by a.scrq desc;
+query = select t.name type,t.type_icon,a.* from m_article a left join article_type t on a.type_id=t.id WHERE a.is_public=1 order by a.scrq desc;
+
+queryCount = select count(*) from m_article  WHERE is_public=1;
 
 queryById = select t.name type,d.content,a.* from m_article a left join article_type t on a.type_id=t.id left join m_detail d on d.id=a.content_id where a.a_id='${id}';
 
 queryAll = select a_id,name, scrq from m_article order by scrq desc;
 
-queryByTag = select t.name type,t.type_icon,a.* from m_article a left join article_type t on a.type_id=t.id where 1=1
+queryByTag = select c.name type,c.type_icon, a.* from m_article a left join m_article_lable b on b.article_id=a.a_id left join article_lable t on b.lable_id=t.id LEFT join article_type c on c.id=a.type_id where 1=1
              <#if tag??>
-                and a.lable like '%${tag}%'
+                and t.name like '%${tag}%'
              </#if>
             order by a.scrq desc;
 
-queryCountByTag = select count(*) from m_article a where 1=1
+queryCountByTag = select count(*) from m_article a left join m_article_lable b on b.article_id=a.a_id left join article_lable t on b.lable_id=t.id  where 1=1
              <#if tag??>
-                and a.lable like '%${tag}%'
+                 and t.name like '%${tag}%'
              </#if>;
 
 queryByKeyWord = select t.name type,t.type_icon,a.* from m_article a left join article_type t on a.type_id=t.id where 1=1
@@ -36,3 +38,7 @@ queryCountByTitle = select count(*) from m_article a left join article_type t on
               <#if title??>
                 and a.name like '%${title}%'
              </#if>;
+
+queryLableName = SELECT name from article_lable where id in(${lableIds});
+
+updateStatus = update m_article set is_public=${status} where a_id=#${id}#;

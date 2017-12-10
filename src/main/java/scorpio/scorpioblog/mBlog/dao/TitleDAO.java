@@ -6,6 +6,5 @@ import scorpio.core.BaseDAO;
 import scorpio.scorpioblog.mBlog.dto.TitleDTO;
 
 @Table(pojo =TitleDTO.class ,table = "m_title",pk = "t_id")
-@Component
 public class TitleDAO extends BaseDAO{
 }

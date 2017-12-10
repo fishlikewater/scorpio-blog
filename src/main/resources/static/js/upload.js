@@ -151,7 +151,7 @@
             swf: '../../dist/Uploader.swf',
             chunked: true,
             chunkSize: 512 * 1024,
-            server: 'http://localhost:8080/admin/upload',
+            server: contextPath+'/admin/upload',
             method:'POST',
             // runtimeOrder: 'flash',
 

@@ -1,7 +1,11 @@
 package scorpio.scorpioblog.mBlog.dto;
 
 import lombok.Data;
+import scorpio.annotation.Transient;
 import scorpio.core.BaseObject;
+
+import java.util.List;
+
 @Data
 public class ArticlesDTO extends BaseObject {
 
@@ -23,9 +27,12 @@ public class ArticlesDTO extends BaseObject {
 
     private String typeId;
 
-    private String lable;
+    @Transient
+    private List<Object> lable;
 
     private String shortContent;
 
     private Boolean isComment;
+
+    private Boolean isPublic;
 }

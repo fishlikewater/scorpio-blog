@@ -1,0 +1,1 @@
+queryLable = select b.name from m_article_lable a left join article_lable b on a.lable_id=b.id where a.article_id=#${id}#;

@@ -15,10 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import scorpio.core.BaseObject;
 import scorpio.pageUtil.Page;
 import scorpio.pageUtil.PageRow;
-import scorpio.scorpioblog.mBlog.dao.ArticleDAO;
-import scorpio.scorpioblog.mBlog.dao.ArticleDetailDAO;
-import scorpio.scorpioblog.mBlog.dao.ArticleLableDAO;
-import scorpio.scorpioblog.mBlog.dao.ArticleTypeDAO;
+import scorpio.scorpioblog.mBlog.dao.*;
 import scorpio.scorpioblog.mBlog.dto.*;
 import scorpio.scorpioblog.mBlog.service.ArticleLableService;
 import scorpio.scorpioblog.mBlog.service.ArticleService;
@@ -28,9 +25,7 @@ import scorpio.utils.UUIDUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @RestController
 public class AdminController {
@@ -49,6 +44,8 @@ public class AdminController {
     private ArticleLableService articleLableService;
     @Autowired
     private ArticleLableDAO articleLableDAO;
+    @Autowired
+    private ArticleLableRelationDAO articleLableRelationDAO;
     /**
      *
      * 登录
@@ -73,7 +70,7 @@ public class AdminController {
      * @param request
      * @return
      */
-    @RequestMapping("/admin/index")
+    @RequestMapping({"/admin/index","/admin"})
     public ModelAndView mainView(ModelAndView mv,  HttpServletRequest request){
         mv.setViewName("admin/index");
         return mv;
@@ -112,7 +109,7 @@ public class AdminController {
      */
     @GetMapping(value = "/admin/list/articles")
     public JSONObject getArticles(@RequestParam(value = "page",defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "30") Integer limit){
-        String sql = "select a.a_id id,a.content_id as contentId, a.name,a.author,a.is_groom as isGroom,c.name typeName,a.lable,a.update_time updateTime,a.scrq from m_article a " +
+        String sql = "select a.a_id id,a.content_id as contentId,a.is_public, a.name,a.author,a.is_groom as isGroom,c.name typeName,a.update_time updateTime,a.scrq from m_article a " +
                 "left join article_type c on a.type_id=c.id";
         List list = articleDAO.queryByTpl(sql, (page - 1) * limit, limit);
         long count = articleDAO.queryCount();
@@ -186,12 +183,12 @@ public class AdminController {
         return mv;
     }
 
-   /* *//**
+   /**
      * 加载标签数据
      * @param page
      * @param limit
      * @return
-     *//*
+     */
     @GetMapping("admin/lable/list")
     public JSONObject getLableData(@RequestParam(value = "page",defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "30") Integer limit){
         String sql = "select * from article_lable";
@@ -203,7 +200,7 @@ public class AdminController {
         obj.put("code",0);
         obj.put("msg","");
         return obj;
-    }*/
+    }
 
 
     /**
@@ -211,7 +208,7 @@ public class AdminController {
      * @param dto
      */
     @PostMapping("admin/lable/add")
-    public String addLable(ArticleLableDTO dto){
+    public Integer addLable(ArticleLableDTO dto){
         return articleLableService.edit(dto);
     }
 
@@ -250,8 +247,8 @@ public class AdminController {
      * @param dto
      */
     @PostMapping("admin/blog/add")
-    public String edit(ArticleDTO dto, String content){
-        articleService.edit(dto,content);
+    public String edit(ArticleDTO dto, String content, String lables){
+        articleService.edit(dto,content, lables);
         return "ok";
     }
 
@@ -264,6 +261,15 @@ public class AdminController {
     public ModelAndView edits(String id, ModelAndView mv){
         ArticleDTO dto = (ArticleDTO) articleDAO.findById(id);
         ArticleDetailDTO detail = (ArticleDetailDTO) articleDetailDAO.findById(dto.getContentId());
+       /* String lable = dto.getLable();
+        if(StringUtils.isNotBlank(lable)){
+            List<String> lableName = new ArrayList<>();
+            String[] tags = lable.split("\\,");
+            String ids = "'" + StringUtils.join(tags, "','") + "'";
+            List<ArticleLableDTO> list = articleLableDAO.queryByCriteria(" id in (" + ids + ")");
+            list.forEach(item->{lableName.add(item.getName());});
+            dto.setLable(StringUtils.join(lableName, ","));
+        }*/
         mv.addObject("dto",dto);
         mv.addObject("detail",detail);
         mv.setViewName("admin/update");
@@ -284,8 +290,30 @@ public class AdminController {
     public void remove(String id, String cId){
         articleDAO.remove(id);
         articleDetailDAO.remove(cId);
+        articleLableRelationDAO.removeByCriteria("article_id='"+id+"'");
     }
 
+    /**
+     * 是否发布
+     * @param id
+     * @param status
+     * @return
+     */
+    @PostMapping("admin/blog/public")
+    public JSONObject isPublic(String id, Boolean status){
+        Map<String, Object> retunMap = new HashMap<>();
+        if(StringUtils.isBlank(id) || status == null){
+            retunMap.put("stattus",001);
+            return (JSONObject) JSON.toJSON(retunMap);
+        }
+        int count = articleService.isPublic(id, status);
+        if(count == 0){
+            retunMap.put("stattus",001);
+            return (JSONObject) JSON.toJSON(retunMap);
+        }
+        retunMap.put("stattus",000);
+        return (JSONObject) JSON.toJSON(retunMap);
+    }
     /**
      * 文件管理
      * @param mv
@@ -307,6 +335,8 @@ public class AdminController {
         mv.setViewName("/agenda/index");
         return mv;
     }
+
+
 
    /* @PostMapping("/admin/upload")
     public void upload(@RequestParam("file")MultipartFile file){

@@ -3,10 +3,13 @@ package scorpio.scorpioblog.mBlog.dto;
 
 import lombok.Data;
 import scorpio.core.BaseObject;
+
 @Data
-public class ArticleLableDTO extends BaseObject{
+public class ArticleLableRelationDTO extends BaseObject{
 
     private Integer id;
 
-    private String name;
+    private String articleId;
+
+    private Integer lableId;
 }

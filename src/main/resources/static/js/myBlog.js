@@ -9,7 +9,14 @@ var myBlog = new function () {
                 jQuery.each(data.data,function (k,v) {
                     type.append("<option value='"+v.id+"'>"+v.name+"</option>");
                 });
-                jQuery("#type").val(id);
+                if(id != "" || id != "undefined"){
+                    jQuery("#type").val(id);
+
+                }
+                layui.use('form',function () {
+                    var form = layui.form;
+                    form.render('select');
+                })
 
             })
 
@@ -27,14 +34,15 @@ var myBlog = new function () {
 
         //初始化列表页
         initList: function () {
-            layui.use('table', function () {
+            layui.use(['table','form'], function () {
                 var table = layui.table;
+                var form = layui.form;
                 table.on('tool(list)', function (obj) {
                     var data = obj.data; //获得当前行数据
                     var layEvent = obj.event; //获得 lay-event 对应的值
                     var tr = obj.tr; //获得当前行 tr 的DOM对象
                     if (layEvent === 'detail') { //查看
-                        layer.msg("查看详情")
+                        myBlog.openLook(data);
                     } else if (layEvent === 'del') { //删除
                         layer.confirm('确定删除吗？', function (index) {
                             obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
@@ -46,14 +54,51 @@ var myBlog = new function () {
                             })
                         });
                     } else if (layEvent === 'edit') { //编辑
-                        window.location.href = contextPath + "admin/blog/update?id=" + data.id;
+                        myBlog.openUpdate(data);
                     }
                 })
-
+                form.on('checkbox(publicController)', function(obj){
+                    myBlog.isPublic(this.value, obj.elem.checked)
+                });
             });
 
         },
 
+        isPublic : function (id, status) {
+            jQuery.post("/admin/blog/public", {
+                id:id,
+                status:status
+            }, function (data) {
+                if(data.status == '001'){
+                    layer.msg("操作失败", {icon:2});
+                }else{
+                    layer.msg("操作成功", {icon:1});
+                }
+            })
+        },
+        
+        openUpdate:function (data) {
+            layer.open({
+                type: 2,
+                title: '编辑窗口',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['1200px', '600px'],
+                content:  contextPath + "admin/blog/update?id=" + data.id
+            });
+        },
+        openLook:function (data) {
+            layer.open({
+                type: 2,
+                title: '编辑窗口',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['1200px', '600px'],
+                content:  contextPath + "/index/article/" + data.id
+            });
+        },
 
         initType: function () {
             layui.use('table', function () {

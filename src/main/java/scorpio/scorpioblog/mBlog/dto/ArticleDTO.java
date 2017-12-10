@@ -6,6 +6,8 @@ import scorpio.annotation.Table;
 import scorpio.annotation.Transient;
 import scorpio.core.BaseObject;
 
+import java.util.List;
+
 
 @Data
 public class ArticleDTO extends BaseObject{
@@ -28,11 +30,14 @@ public class ArticleDTO extends BaseObject{
 
     private String typeId;
 
-    private String lable;
+    @Transient
+    private List<Integer> lable;
 
     private String shortContent;
 
     private Boolean isComment;
+
+    private Boolean isPublic;
 
     @Transient
     private String day;

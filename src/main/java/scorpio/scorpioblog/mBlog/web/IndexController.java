@@ -7,13 +7,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import scorpio.core.BaseObject;
-import scorpio.scorpioblog.mBlog.dao.ArticleDAO;
-import scorpio.scorpioblog.mBlog.dao.ArticleDetailDAO;
-import scorpio.scorpioblog.mBlog.dao.TitleDAO;
-import scorpio.scorpioblog.mBlog.dto.ArticleDTO;
-import scorpio.scorpioblog.mBlog.dto.ArticleDetailDTO;
-import scorpio.scorpioblog.mBlog.dto.ArticlesDTO;
-import scorpio.scorpioblog.mBlog.dto.TitleDTO;
+import scorpio.scorpioblog.mBlog.dao.*;
+import scorpio.scorpioblog.mBlog.dto.*;
 import scorpio.scorpioblog.mBlog.model.Archive;
 import scorpio.scorpioblog.utils.AjaxResult;
 import scorpio.scorpioblog.utils.SystemUtils;
@@ -29,11 +24,13 @@ import java.util.*;
 public class IndexController {
 
     @Autowired
-    private TitleDAO titleDAO;
-    @Autowired
     private ArticleDAO articleDAO;
     @Autowired
     private ArticleDetailDAO articleDetailDAO;
+    @Autowired
+    private ArticleLableDAO articleLableDAO;
+    @Autowired
+    private ArticleLableRelationDAO articleLableRelationDAO;
 
     private static final String[] ICONS = {"bg-ico-book", "bg-ico-game", "bg-ico-note", "bg-ico-chat", "bg-ico-code", "bg-ico-image", "bg-ico-web", "bg-ico-link", "bg-ico-design", "bg-ico-lock"};
 
@@ -49,7 +46,7 @@ public class IndexController {
 
         /** 按时间获取文章列表*/
         List<Map<String, Object>> allArticleList = articleDAO.queryByTpl("query",limit*(page-1),limit);
-        Integer count = articleDAO.queryCount();
+        Integer count = articleDAO.queryCountByTpl("queryCount", null);
 
         if(allArticleList != null){
             mv.addObject("articles",allArticleList);
@@ -58,10 +55,19 @@ public class IndexController {
         mv.addObject("totals",Math.ceil(count/limit));
         /** 添加基础路径*/
         mv.setViewName("pages/index");
-        mv.addObject("baseUrl",request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath());
         return mv;
     }
 
+    /**
+     * 进入链接页面
+     * @param mv
+     * @return
+     */
+    @RequestMapping(value = "index/links")
+    public ModelAndView links(ModelAndView mv){
+        mv.setViewName("pages/links");
+        return mv;
+    }
 
     /**
      * 进入About页面
@@ -107,27 +113,6 @@ public class IndexController {
         return mv;
     }
 
-    /**
-     * 进入学习页面
-     * @param mv
-     * @return
-     */
-    @RequestMapping(value = "index/links")
-    public ModelAndView links(ModelAndView mv){
-        mv.setViewName("pages/links");
-        return mv;
-    }
-
-    /**
-     * 进入留言页面
-     * @param mv
-     * @return
-     */
-    @RequestMapping(value = "index/gbook")
-    public ModelAndView gbook(ModelAndView mv){
-        mv.setViewName("gbook");
-        return mv;
-    }
 
     /**
      * 获取文章详情
@@ -141,15 +126,11 @@ public class IndexController {
         paramMap.put("id", aId);
         List<Map<String, Object>> list = articleDAO.queryByTpl("queryById", paramMap);
         List<String> tagList = new ArrayList<>();
-        String lable = list.get(0).get("lable")+"";
         if(list.size()>0){
             String content = list.get(0).get("content") + "";
             list.get(0).put("content", SystemUtils.markdownToHtml(content));
         }
-        if(StringUtils.isNotBlank(lable)){
-            String[] tags = lable.split(",");
-            tagList = Arrays.asList(tags);
-        }
+        tagList = articleLableRelationDAO.queryForListByTpl("queryLable", paramMap, String.class);
         mv.addObject("tags",tagList);
         mv.addObject("article",list.get(0));
         mv.setViewName("pages/detail");
@@ -239,7 +220,7 @@ public class IndexController {
     }
 
     /**
-     * 点击分类搜索
+     * 标题搜索
      * @param title
      * @return
      */
@@ -266,6 +247,18 @@ public class IndexController {
 
     }
 
+    /**
+     * 进入标签页
+     * @param mv
+     * @return
+     */
+    @GetMapping("index/lable")
+    public ModelAndView goLable(ModelAndView mv){
+        List query = articleLableDAO.query();
+        mv.addObject("list", query);
+        mv.setViewName("pages/lable");
+        return mv;
+    }
 
     public static void main(String[] args) throws ParseException {
         System.out.println("2017-05-21".substring(0,7));

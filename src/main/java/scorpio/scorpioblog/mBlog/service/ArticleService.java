@@ -5,18 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import scorpio.BaseUtils;
+import scorpio.annotation.Tranctional;
 import scorpio.scorpioblog.mBlog.BlogConstant;
 import scorpio.scorpioblog.mBlog.dao.ArticleDAO;
 import scorpio.scorpioblog.mBlog.dao.ArticleDetailDAO;
+import scorpio.scorpioblog.mBlog.dao.ArticleLableDAO;
 import scorpio.scorpioblog.mBlog.dto.ArticleDTO;
 import scorpio.scorpioblog.mBlog.dto.ArticleDetailDTO;
+import scorpio.scorpioblog.mBlog.dto.ArticleLableDTO;
 import scorpio.scorpioblog.utils.SystemUtils;
 import scorpio.utils.UUIDUtils;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class ArticleService {
@@ -25,14 +29,34 @@ public class ArticleService {
     private ArticleDetailDAO articleDetailDAO;
     @Autowired
     private ArticleDAO articleDAO;
-
+    @Autowired
+    private ArticleLableService articleLableService;
+    @Autowired
+    private ArticleLableDAO articleLableDAO;
 
     /**
      * 编辑文章
      * @param dto
      */
-    public void edit(ArticleDTO dto, String content){
+    @Tranctional(Connection.TRANSACTION_READ_UNCOMMITTED)
+    public void edit(ArticleDTO dto, String content, String lables){
 
+        /** 标签判断 */
+        List<Integer> lableIdList = new ArrayList<>();
+        if(StringUtils.isNotBlank(lables)){
+            String[] tags = lables.split("\\,");
+            for (String tag:tags){
+                List<ArticleLableDTO> list = articleLableDAO.queryByCriteria("name = '" + tag + "'");
+                if(list.size()>0){
+                    lableIdList.add(list.get(0).getId());
+                }else{
+                    ArticleLableDTO dto1 = new ArticleLableDTO();
+                    dto1.setName(tag);
+                    lableIdList.add(articleLableService.edit(dto1));
+                }
+            }
+            dto.setLable(lableIdList);
+        }
 
         if(StringUtils.isBlank(dto.getaId())){
             ArticleDetailDTO ddto = new ArticleDetailDTO();
@@ -46,8 +70,7 @@ public class ArticleService {
             if(StringUtils.isBlank(dto.gettPic())){
                 dto.settPic(gen_thumb(content));
             }
-            //dto.setTPic(BlogConstant.getPic());
-            articleDAO.createAndId(dto);
+            articleDAO.create(dto);
             articleDetailDAO.create(ddto);
         }else {
             ArticleDetailDTO ddto = new ArticleDetailDTO();
@@ -64,6 +87,7 @@ public class ArticleService {
             articleDAO.update(dto);
             articleDetailDAO.update(ddto);
         }
+        articleLableService.articleLable(dto.getaId(), dto.getLable());
     }
 
 
@@ -97,5 +121,13 @@ public class ArticleService {
     public static void main(String[] args) {
         ArticleService a = new ArticleService();
         a.test();
+    }
+
+    public int isPublic(String id, Boolean status) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("id",id);
+        paramMap.put("status",status==true?1:0);
+        return articleDAO.executeUpdate("updateStatus", paramMap);
+
     }
 }

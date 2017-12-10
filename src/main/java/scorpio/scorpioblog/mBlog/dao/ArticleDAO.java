@@ -7,6 +7,5 @@ import scorpio.scorpioblog.mBlog.dto.ArticleDTO;
 import scorpio.scorpioblog.mBlog.dto.ArticlesDTO;
 
 @Table(pojo = ArticleDTO.class,table = "m_article", pk = "a_id")
-@Component
 public class ArticleDAO extends BaseDAO {
 }
