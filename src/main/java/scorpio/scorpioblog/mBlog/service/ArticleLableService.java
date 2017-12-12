@@ -50,7 +50,7 @@ public class ArticleLableService {
 
     public void articleLable(String articleId, List<Integer> lableId){
 
-        if(lableId.size()>0){
+        if(lableId != null && lableId.size()>0){
             articleLableRelationDAO.removeByCriteria("article_id='"+articleId+"'");
             lableId.forEach(id->{
                 ArticleLableRelationDTO dto = new ArticleLableRelationDTO();

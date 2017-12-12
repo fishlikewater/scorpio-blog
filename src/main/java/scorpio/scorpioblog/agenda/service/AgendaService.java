@@ -9,7 +9,7 @@ import scorpio.scorpioblog.agenda.dto.AgendaDTO;
 
 
 @Service
-@Tranctional(level = 1)
+@Tranctional(1)
 public class AgendaService {
 
     @Autowired
